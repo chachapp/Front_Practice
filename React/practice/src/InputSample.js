@@ -1,25 +1,43 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 function InputSample() {
-    const [text, setText] = useState('');
+    const [inputs, setInputs] = useState({
+        name : '',
+        nickname : ''
+    });
+
+    const nameInput = useRef();
+
+    const {name, nickname} = inputs; // 비구조화 할당을 통해 값을 추출..
 
     const onChange = (e) => {
-        setText(e.target.value);
+        const {value, name} = e.target; // e.target에서 name과 value를 추출.
+
+        setInputs({
+            ...inputs, // 스프레드 연산자로 기존의 input 객체를 복사
+            [name] : value // name 키를 가진 값을 value로 설정
+        });
     };
 
     const onReset = () => {
-        setText('');
+       setInputs({
+        name : '',
+        nickname : ''
+       });
+
+       nameInput.current.focus();
     };
 
     return (
         <div>
-            <input />
-            <button>초기화</button>
+            <input name="name" placeholder="이름" onChange={onChange} value={name} ref={nameInput}/>
+            <input name="nickname" placeholder="닉네임" onChange={onChange} value={nickname}/>
+            <button onClick={onReset}>초기화</button>
             <div>
                 <b>값 : </b>
+                {name} ({nickname})
             </div>
         </div>
-
     );
 
 }
