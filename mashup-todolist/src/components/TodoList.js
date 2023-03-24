@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
 
@@ -9,7 +9,26 @@ const TodoListBlock = styled.div`
   overflow-y: auto;
 `;
 
+const getData = async () => {
+    const res = await fetch().then((res) => {res.json()});
+
+    console.log(res);
+
+    const iniData = res.slice(0, 20).map((it) => {
+        return {
+            author : it.email,
+            content : it.body,
+        }
+    });
+
+};
+
+
 function TodoList() {
+    useEffect(() => {
+        getData();
+    }, []);
+
     return (
         <div>
             <TodoListBlock>
